@@ -3,4 +3,4 @@ project(Lab1)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Lab1 main.cpp Token.h TokenType.h Automaton.h Lexer.h ColonAutomaton.h ColonDashAutomaton.h UndefinedCharAutomaton.h IDAutomaton.h)
+add_executable(Lab1 main.cpp Token.h TokenType.h Automaton.h Lexer.h ColonAutomaton.h ColonDashAutomaton.h UndefinedCharAutomaton.h IDAutomaton.h QueriesAutomaton.h LeftParenAutomaton.h StringAutomaton.h CommaAutomaton.h QMarkAutomata.h PeriodAutomaton.h EOFAutomaton.h RulesAutomaton.h)

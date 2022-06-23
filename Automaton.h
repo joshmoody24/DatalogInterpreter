@@ -34,14 +34,16 @@ protected:
     }
 
     char curr() {
-        if (endOfFile())
+        if (endOfFile()) {
             throw "Tried to read past the file, does your automaton state check for it as a transition?";
+        }
         return input.at(currCharIndex);
     }
 
     bool match(char c) {
-        if (endOfFile())
+        if (endOfFile()) {
             throw "Tried to read past the file, does your automaton state check for it as a transition?";
+        }
         return (curr() == c);
     }
 

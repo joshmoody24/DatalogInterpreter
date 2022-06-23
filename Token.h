@@ -19,6 +19,12 @@ public:
         out << "(" << typeName(type) << "," << "\"" << contents << "\"" << "," << line << ")";
         return out.str();
     }
+    string getContents() {
+        return contents;
+    }
+    string getType(){
+        return typeName(type);
+    }
 private:
     TokenType type;
     string contents;
@@ -37,6 +43,32 @@ private:
                 return "COLON_DASH";
             default:
                 return "UNDEFINED";
+            case COMMENT:
+                return "COMMENT";
+            case STRING:
+                return "STRING";
+            case QUERIES:
+                return "QUERIES";
+            case SCHEMES:
+                return "SCHEMES";
+            case LEFT_PAREN:
+                return "LEFT_PAREN";
+            case RIGHT_PAREN:
+                return "RIGHT_PAREN";
+            case Q_MARK:
+                return "Q_MARK";
+            case RULES:
+                return "RULES";
+            case PERIOD:
+                return "PERIOD";
+            case END_OF_FILE:
+                return "EOF";
+            case MULTIPLY:
+                return "MULTIPLY";
+            case ADD:
+                return "ADD";
+            case FACTS:
+                return "FACTS";
         }
     }
 };

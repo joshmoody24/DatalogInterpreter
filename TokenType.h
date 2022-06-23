@@ -8,8 +8,26 @@
 #include <string>
 #include <sstream>
 using namespace std;
+
 enum TokenType {
-    COMMA, COLON, COLON_DASH, UNDEFINED, ID // add more here
+    COMMA,
+    COLON,
+    COLON_DASH,
+    UNDEFINED,
+    ID,
+    COMMENT,
+    STRING,
+    QUERIES,
+    SCHEMES,
+    LEFT_PAREN,
+    RIGHT_PAREN,
+    Q_MARK,
+    RULES,
+    PERIOD,
+    END_OF_FILE,
+    MULTIPLY,
+    ADD,
+    FACTS,
 };
 
 #endif //LAB1_TOKENTYPE_H
