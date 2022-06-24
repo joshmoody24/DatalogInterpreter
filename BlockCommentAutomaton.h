@@ -55,6 +55,10 @@ private:
             next();
             return;
         }
+        else{
+            next();
+            s2();
+        }
     }
 };
 
