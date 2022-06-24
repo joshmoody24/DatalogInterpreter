@@ -8,7 +8,7 @@
 class SchemesAutomaton : public Automaton {
 public:
     SchemesAutomaton() {
-        type = TokenType::QUERIES;
+        type = TokenType::SCHEMES;
     }
 private:
     void s0() {
