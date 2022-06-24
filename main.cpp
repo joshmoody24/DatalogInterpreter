@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     }
 
     string fileName = argv[1];
-    cout << "reading " << fileName << endl << "-----------" << endl;
+    //cout << "reading " << fileName << endl << "-----------" << endl;
 
     string fileContents;
     fstream newFile;
@@ -25,7 +25,7 @@ int main(int argc, char *argv[]) {
         newFile.close();
     }
 
-    cout << fileContents << endl;
+    // cout << fileContents << endl;
 
     Lexer lexer;
     lexer.run(fileContents);

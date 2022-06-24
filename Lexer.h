@@ -21,6 +21,9 @@
 #include "PeriodAutomaton.h"
 #include "EOFAutomaton.h"
 #include "RulesAutomaton.h"
+#include "FactsAutomaton.h"
+#include "BlockCommentAutomaton.h"
+#include "LineCommentAutomaton.h"
 
 #include <iostream>
 #include <cctype>
@@ -40,6 +43,9 @@ public:
         automata.push_back(new CommaAutomaton());
         automata.push_back(new QMarkAutomaton());
         automata.push_back(new PeriodAutomaton());
+        automata.push_back(new FactsAutomaton());
+        automata.push_back(new BlockCommentAutomaton());
+        automata.push_back(new LineCommentAutomaton());
 
         // currently, my EOFAutomaton is a bit buggy (shows newline in contents)
         // so I'm just gonna fake it by tacking on an EOF token at the end always
@@ -74,11 +80,11 @@ public:
                 }
             }
 
-            // update the current line based on the number of newlines read
-            currentLine += maxAutomaton->getNewLines();
-
             Token currToken = Token(maxAutomaton->getType(), input.substr(0, maxRead),
                                     currentLine);
+
+            // update the current line based on the number of newlines read
+            currentLine += maxAutomaton->getNewLines();
 
             // ignore whitespace tokens
             if(currToken.getType() != "UNDEFINED" || currToken.getContents().size() != 1 || !isspace(currToken.getContents()[0])){
