@@ -20,9 +20,16 @@ private:
         else return sError();
     }
     void s1(){
+        if(match('|')){
+            sError();
+            return;
+        }
+        else s2();
+    }
+    void s2(){
         if(!match('\n')){
             next();
-            s1();
+            s2();
         }
         else return;
     }

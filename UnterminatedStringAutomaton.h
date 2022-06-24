@@ -2,14 +2,15 @@
 // Created by joshm on 6/23/2022.
 //
 
-#ifndef LAB1_STRINGAUTOMATON_H
-#define LAB1_STRINGAUTOMATON_H
+#ifndef LAB1_UNTERMINATEDSTRINGAUTOMATON_H
+#define LAB1_UNTERMINATEDSTRINGAUTOMATON_H
 
 #include "Automaton.h"
-class StringAutomaton : public Automaton {
+
+class UnterminatedStringAutomaton : public Automaton {
 public:
-    StringAutomaton() {
-        type = TokenType::STRING; // set the type
+    UnterminatedStringAutomaton(){
+        type = TokenType::UNDEFINED;
     }
 private:
     void s0() {
@@ -23,10 +24,9 @@ private:
 
     void s1(){
         if(endOfFile()){
-            sError();
             return;
         }
-        if(match('\'')){
+        else if(match('\'')){
             next();
             s2();
         }
@@ -37,18 +37,15 @@ private:
     }
 
     void s2(){
-        if(endOfFile()){
-            sError();
-            return;
-        }
         if(match('\'')){
             next();
             s1();
         }
         else{
+            sError();
             return;
         }
     }
 };
 
-#endif //LAB1_STRINGAUTOMATON_H
+#endif //LAB1_UNTERMINATEDSTRINGAUTOMATON_H
