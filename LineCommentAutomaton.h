@@ -27,6 +27,7 @@ private:
         else s2();
     }
     void s2(){
+        if(endOfFile()) return;
         if(!match('\n')){
             next();
             s2();
