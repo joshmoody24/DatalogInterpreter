@@ -52,6 +52,7 @@ private:
             return;
         }
         if(match('#')){
+            next();
             return;
         }
     }
