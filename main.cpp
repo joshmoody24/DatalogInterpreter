@@ -24,6 +24,10 @@ int main(int argc, char *argv[]) {
         }
         newFile.close();
     }
+    else {
+        std::cout << "An error occurred while opening the file" << endl;
+        return 1;
+    }
 
     // cout << fileContents << endl;
 
