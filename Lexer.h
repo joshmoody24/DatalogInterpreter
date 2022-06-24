@@ -26,6 +26,7 @@
 #include "LineCommentAutomaton.h"
 #include "UnterminatedStringAutomaton.h"
 #include "UnterminatedCommentAutomaton.h"
+#include "SchemesAutomaton.h"
 
 #include <iostream>
 #include <cctype>
@@ -50,6 +51,7 @@ public:
         automata.push_back(new LineCommentAutomaton());
         automata.push_back(new UnterminatedStringAutomaton());
         automata.push_back(new UnterminatedCommentAutomaton());
+        automata.push_back(new SchemesAutomaton());
 
         // currently, my EOFAutomaton is a bit buggy (shows newline in contents)
         // so I'm just gonna fake it by tacking on an EOF token at the end always
