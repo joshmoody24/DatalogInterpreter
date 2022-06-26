@@ -1,4 +1,5 @@
 #include "Lexer/Lexer.h"
+#include "Parser/Parser.h"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -31,7 +32,27 @@ int main(int argc, char *argv[]) {
 
     // cout << fileContents << endl;
 
-    Lexer lexer;
+    /* Lexer lexer;
     lexer.run(fileContents);
     return 0;
+     */
+
+    vector<Token> tokens = {
+            Token(ID,"Ned",2),
+            Token(LEFT_PAREN,"(",2),
+            Token(RIGHT_PAREN,")",2),
+    };
+    try {
+        Parser p = Parser(tokens);
+        cout << p.tokenType() << endl;
+        p.advanceToken();
+        cout << p.tokenType() << endl;
+        p.advanceToken();
+        cout << p.tokenType() << endl;
+        p.throwError();
+    }
+    catch(Token errorToken) {
+        cout << errorToken.toString();
+    }
+
 }

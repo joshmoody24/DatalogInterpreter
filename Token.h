@@ -19,12 +19,16 @@ public:
         out << "(" << typeName(type) << "," << "\"" << contents << "\"" << "," << line << ")";
         return out.str();
     }
-    string getContents() {
+    string getContents() const{
         return contents;
     }
-    string getType(){
-        return typeName(type);
+    TokenType getType() const{
+        return type;
     }
+    unsigned int getLine() const{
+        return line;
+    }
+
 private:
     TokenType type;
     string contents;
