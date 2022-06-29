@@ -98,8 +98,11 @@ public:
 
             // ignore whitespace tokens
             if(currToken.getType() != UNDEFINED || currToken.getContents().size() != 1 || !isspace(currToken.getContents()[0])){
-                cout << currToken.toString() << endl;
-                tokens.push_back(currToken);
+                // cout << currToken.toString() << endl;
+                // ignore comments
+                if(currToken.getType() != COMMENT){
+                    tokens.push_back(currToken);
+                }
             }
 
             input = input.substr(maxRead);
