@@ -111,7 +111,7 @@ public:
 
         tokens.push_back(EOFToken);
 
-        cout << "Total Tokens = " << tokens.size();
+        cout << "Total Tokens = " << tokens.size() << endl;
         return tokens;
     }
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 
 int main(int argc, char *argv[]) {
 
@@ -32,27 +33,16 @@ int main(int argc, char *argv[]) {
 
     // cout << fileContents << endl;
 
-    /* Lexer lexer;
-    lexer.run(fileContents);
-    return 0;
-     */
+    Lexer lexer;
+    vector<Token> tokens = lexer.run(fileContents);
 
-    vector<Token> tokens = {
-            Token(ID,"Ned",2),
-            Token(LEFT_PAREN,"(",2),
-            Token(RIGHT_PAREN,")",2),
-    };
     try {
         Parser p = Parser(tokens);
-        cout << p.tokenType() << endl;
-        p.advanceToken();
-        cout << p.tokenType() << endl;
-        p.advanceToken();
-        cout << p.tokenType() << endl;
-        p.throwError();
+        p.parse();
+        cout << "Success!";
     }
     catch(Token errorToken) {
-        cout << errorToken.toString();
+        cout << "Failure!" << endl << "  " << errorToken.toString();
     }
 
 }
