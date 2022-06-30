@@ -110,11 +110,11 @@ public:
 
         // add the EOF Token
         Token EOFToken = Token(END_OF_FILE, "", currentLine);
-        cout << EOFToken.toString() << endl;
+        // cout << EOFToken.toString() << endl;
 
         tokens.push_back(EOFToken);
 
-        cout << "Total Tokens = " << tokens.size() << endl;
+        //cout << "Total Tokens = " << tokens.size() << endl;
         return tokens;
     }
 
