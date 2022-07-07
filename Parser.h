@@ -254,7 +254,7 @@ public:
             match(COMMA);
             Predicate p = predicate();
             ids.push_back(p);
-            predicateList(ids);
+            ids = predicateList(ids);
             return ids;
         }
         else {
