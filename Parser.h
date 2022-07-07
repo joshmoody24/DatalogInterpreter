@@ -16,16 +16,16 @@ private:
     int currTokenIndex = 0;
 public:
     Parser(const vector<Token>& tokens) : tokens(tokens) {}
+
     TokenType tokenType() const {
         if(tokens.empty()) throw "Attempted to get token type in empty vector";
-        return tokens.at(0).getType();
+        return tokens.at(currTokenIndex).getType();
     }
     void advanceToken() {
-        tokens.erase(tokens.begin());
         currTokenIndex++;
     }
     void throwError() {
-        throw tokens.at(0);
+        throw tokens.at(currTokenIndex);
     }
 
     DatalogProgram parse() {
@@ -46,7 +46,7 @@ public:
     }
 
     string getPrevTokenContents() {
-        if (currTokenIndex < 0) throw "previous token contents error: attempted to read before the first token";
+        if (currTokenIndex < 1) throw "previous token contents error: attempted to read before the first token";
         return tokens.at(currTokenIndex - 1).getContents();
     }
 
@@ -78,7 +78,7 @@ public:
             match(COMMA);
             match(ID);
             ids.push_back(Parameter(getPrevTokenContents()));
-            idList(ids);
+            ids = idList(ids);
             return ids;
         } else {
             // lambda
@@ -100,10 +100,15 @@ public:
         firstParameter.setValue(getPrevTokenContents());
         ids.push_back(firstParameter);
 
-        idList();
+        ids = idList(ids);
         match(RIGHT_PAREN);
 
+        for(Parameter i : ids){
+            newScheme.addParameter(i);
+        }
+
         program.addScheme(newScheme);
+
     }
 
     void schemeList(){
@@ -118,11 +123,23 @@ public:
 
     void fact(){
         match(ID);
+        Predicate newFact;
+        newFact.setName(getPrevTokenContents());
         match(LEFT_PAREN);
         match(STRING);
-        stringList();
+        Parameter first = Parameter(getPrevTokenContents());
+        vector<Parameter> params = vector<Parameter>();
+        params.push_back(first);
+        params = stringList(params);
+        newFact.setParameters(params);
+        // add strings to the domain
+        for(Parameter p : params){
+            program.addDomainItem(p.toString());
+        }
+
         match(RIGHT_PAREN);
         match(PERIOD);
+        program.addFact(newFact);
     }
 
     void factList(){
@@ -135,28 +152,40 @@ public:
         }
     }
 
-    void stringList(){
+    vector<Parameter> stringList(vector<Parameter> params){
         if(tokenType() == COMMA){
             match(COMMA);
             match(STRING);
-            stringList();
+            params.push_back(Parameter(getPrevTokenContents()));
+            params = stringList(params);
+            return params;
         }
         else {
             // lambda
+            return params;
         }
     }
 
-    void rule(){
-        headPredicate();
+    Rule rule(){
+        Rule rule;
+        Predicate head = headPredicate();
+        rule.setHead(head);
         match(COLON_DASH);
-        predicate();
-        predicateList();
+        vector<Predicate> predicates = vector<Predicate>();
+        Predicate first = predicate();
+        predicates.push_back(first);
+        predicates = predicateList(predicates);
+        for(Predicate p : predicates){
+            rule.addPredicate(p);
+        }
         match(PERIOD);
+        return rule;
     }
 
     void ruleList(){
         if(tokenType() == ID) {
-            rule();
+            Rule r = rule();
+            program.addRule(r);
             ruleList();
         }
         else {
@@ -165,7 +194,8 @@ public:
     }
 
     void query(){
-        predicate();
+        Predicate p = predicate();
+        program.addQuery(p);
         match(Q_MARK);
     }
 
@@ -179,63 +209,86 @@ public:
         }
     }
 
-    void predicate(){
+    Predicate predicate(){
         if(tokenType() == ID){
+            Predicate p = Predicate();
             match(ID);
+            p.setName(getPrevTokenContents());
             match(LEFT_PAREN);
-            parameter();
-            parameterList();
+            vector<Parameter> ids;
+            Parameter first = parameter();
+            ids.push_back(first);
+            ids = parameterList(ids);
+            p.setParameters(ids);
             match(RIGHT_PAREN);
+            return p;
         }
         else{
             // lambda
         }
     }
 
-    void headPredicate(){
+    Predicate headPredicate(){
         if(tokenType() == ID){
+            Predicate hp;
             match(ID);
+            hp.setName(getPrevTokenContents());
             match(LEFT_PAREN);
             match(ID);
-            idList();
+            vector<Parameter> ids = vector<Parameter>();
+            ids.push_back(getPrevTokenContents());
+            ids = idList(ids);
+            hp.setParameters(ids);
             match(RIGHT_PAREN);
+            return hp;
         }
         else{
             // lambda
+            return Predicate();
         }
     }
 
-    void predicateList(){
+    vector<Predicate> predicateList(vector<Predicate> ids){
         if(tokenType() == COMMA){
             match(COMMA);
-            predicate();
-            predicateList();
+            Predicate p = predicate();
+            ids.push_back(p);
+            predicateList(ids);
+            return ids;
         }
         else {
             // lambda
+            return ids;
         }
     }
 
-    void parameter(){
+    Parameter parameter(){
         if(tokenType() == STRING){
             match(STRING);
+            return Parameter(getPrevTokenContents());
         }
         else if(tokenType() == ID){
             match(ID);
+            Parameter p = Parameter(getPrevTokenContents());
+            return p;
         }
         else{
             throwError();
+            return Parameter();
         }
     }
 
-    void parameterList(){
+    vector<Parameter> parameterList(vector<Parameter> ids){
         if(tokenType() == COMMA){
             match(COMMA);
-            parameter();
-            parameterList();
+            Parameter p = parameter();
+            ids.push_back(p);
+            ids = parameterList(ids);
+            return ids;
         }
         else{
             // lambda
+            return ids;
         }
     }
 };
