@@ -13,7 +13,7 @@ class Parser {
 private:
     vector<Token> tokens;
     DatalogProgram program;
-    int currTokenIndex = 0;
+    unsigned int currTokenIndex = 0;
 public:
     Parser(const vector<Token>& tokens) : tokens(tokens) {}
 
@@ -225,6 +225,7 @@ public:
         }
         else{
             // lambda
+            return Predicate();
         }
     }
 
