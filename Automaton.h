@@ -6,7 +6,7 @@
 #define LAB1_AUTOMATON_H
 
 #include <string>
-#include "../../Token.h"
+#include "Token.h"
 
 class Automaton {
 protected:

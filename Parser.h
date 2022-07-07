@@ -5,12 +5,15 @@
 #ifndef LAB1_PARSER_H
 #define LAB1_PARSER_H
 
-#include "../Token.h"
+#include "Token.h"
+#include "DatalogProgram.h"
 #include <vector>
 
 class Parser {
 private:
     vector<Token> tokens;
+    DatalogProgram program;
+    int currTokenIndex = 0;
 public:
     Parser(const vector<Token>& tokens) : tokens(tokens) {}
     TokenType tokenType() const {
@@ -19,13 +22,15 @@ public:
     }
     void advanceToken() {
         tokens.erase(tokens.begin());
+        currTokenIndex++;
     }
     void throwError() {
         throw tokens.at(0);
     }
 
-    void parse() {
+    DatalogProgram parse() {
         datalogProgram();
+        return program;
     }
 
     string match(TokenType t) {
@@ -38,6 +43,16 @@ public:
             throwError();
         }
         return tokenValue;
+    }
+
+    string getPrevTokenContents() {
+        if (currTokenIndex < 0) throw "previous token contents error: attempted to read before the first token";
+        return tokens.at(currTokenIndex - 1).getContents();
+    }
+
+    string getCurrTokenContents() {
+        if (currTokenIndex >= tokens.size()) throw "current token contents error: attempted to read past the end of the tokens";
+        return tokens.at(currTokenIndex).getContents();
     }
 
     void datalogProgram(){
@@ -58,22 +73,37 @@ public:
         match(END_OF_FILE);
     }
 
-    void idList() {
+    vector<Parameter> idList(vector<Parameter> ids) {
         if (tokenType() == COMMA) {
             match(COMMA);
             match(ID);
-            idList();
+            ids.push_back(Parameter(getPrevTokenContents()));
+            idList(ids);
+            return ids;
         } else {
             // lambda
+            return ids;
         }
     }
 
     void scheme() {
+        Predicate newScheme;
+
         match(ID);
+        newScheme.setName(getPrevTokenContents());
+
         match(LEFT_PAREN);
         match(ID);
+
+        vector<Parameter> ids = vector<Parameter>();
+        Parameter firstParameter;
+        firstParameter.setValue(getPrevTokenContents());
+        ids.push_back(firstParameter);
+
         idList();
         match(RIGHT_PAREN);
+
+        program.addScheme(newScheme);
     }
 
     void schemeList(){

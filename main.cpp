@@ -1,9 +1,10 @@
-#include "Lexer/Lexer.h"
-#include "Parser/Parser.h"
+#include "Lexer.h"
+#include "Parser.h"
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include "DatalogProgram.h"
 
 int main(int argc, char *argv[]) {
 
@@ -44,5 +45,61 @@ int main(int argc, char *argv[]) {
     catch(Token errorToken) {
         cout << "Failure!" << endl << "  " << errorToken.toString();
     }
+    catch(const char* errorMsg) {
+        cout << errorMsg;
+    }
+
+    // datalog program test case
+    Predicate scheme1 = Predicate();
+    scheme1.setName("snap");
+    scheme1.addParameter("S");
+    scheme1.addParameter("N");
+    scheme1.addParameter("A");
+    scheme1.addParameter("P");
+    Predicate scheme2 = Predicate();
+    scheme2.setName("HasSameAddress");
+    scheme2.addParameter("X");
+    scheme2.addParameter("Y");
+    Predicate fact = Predicate();
+    fact.setName("snap");
+    fact.addParameter("'12345'");
+    fact.addParameter("'C. Brown'");
+    fact.addParameter("'12 Apple'");
+    fact.addParameter("'555-1234'");
+    Rule rule = Rule();
+    Predicate ruleHead = Predicate();
+    ruleHead.setName("HasSameAddress");
+    ruleHead.addParameter("X");
+    ruleHead.addParameter("Y");
+    Predicate ruleBody1 = Predicate();
+    ruleBody1.setName("snap");
+    ruleBody1.addParameter("S");
+    ruleBody1.addParameter("N");
+    ruleBody1.addParameter("A");
+    ruleBody1.addParameter("P");
+    Predicate ruleBody2 = Predicate();
+    ruleBody2.setName("snap");
+    ruleBody2.addParameter("S");
+    ruleBody2.addParameter("N");
+    ruleBody2.addParameter("A");
+    ruleBody2.addParameter("P");
+    rule.setHead(ruleHead);
+    rule.addPredicate(ruleBody1);
+    rule.addPredicate(ruleBody2);
+    Predicate query = Predicate();
+    query.setName("HasSameAddress");
+    query.addParameter("'Snoopy'");
+    query.addParameter("Who");
+
+    DatalogProgram program = DatalogProgram();
+    program.addScheme(scheme1);
+    program.addScheme(scheme2);
+    program.addFact(fact);
+    program.addRule(rule);
+    program.addQuery(query);
+    program.addDomainItem("'12 Apple'");
+
+    cout << program.toString() << endl;
+
 
 }
