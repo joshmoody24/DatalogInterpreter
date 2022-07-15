@@ -49,7 +49,7 @@ public:
         vector<string> variables;
         vector<unsigned int> indicesToKeep;
         vector<Parameter> params = q.getParameters();
-        for(int i = 0; i < params.size(); i++){
+        for(unsigned int i = 0; i < params.size(); i++){
             Parameter param = params.at(i);
             // if it starts with single quote, it's a constant
             bool isConstant = param.getValue()[0] == '\'';

@@ -120,7 +120,7 @@ public:
         // keep only the columns in the
         // vector in the order they are given
         Header newHeader = Header();
-        for(int i = 0; i < indiciesToKeep.size(); i++){
+        for(unsigned int i = 0; i < indiciesToKeep.size(); i++){
             newHeader.push_back(header.at(indiciesToKeep.at(i)));
         }
         output->setHeader(newHeader);
@@ -128,7 +128,7 @@ public:
         // for each tuple "re-order" it
         for(Tuple t : tuples){
             Tuple newTuple = Tuple();
-            for(int j = 0; j < indiciesToKeep.size(); j++){
+            for(unsigned int j = 0; j < indiciesToKeep.size(); j++){
                 newTuple.push_back(t.at(indiciesToKeep.at(j)));
             }
             output->addTuple(newTuple);
