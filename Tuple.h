@@ -35,6 +35,10 @@ public:
         return values.at(index);
     }
 
+    vector<string> getValues(){
+	return values;
+    }
+
     void push_back(string value) {
         values.push_back(value);
     }

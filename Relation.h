@@ -8,12 +8,46 @@
 #include "Header.h"
 #include "Tuple.h"
 #include <set>
+#include <map>
 
 class Relation {
 private:
     string name;
     Header header;
     set<Tuple> tuples;
+
+    Header combineHeaders(Header &h1, Header &h2, vector<int> &uniqueCols){
+	Header newHeader = Header();
+	for(string attr : h1.getAttributes()){
+		newHeader.push_back(attr);
+	}
+
+	for(int i : uniqueCols){
+		newHeader.push_back(h2.at(i));
+	}
+	return newHeader;
+    }
+
+    bool isJoinable(Tuple &t1, Tuple &t2, map<int, int> &overlap){
+	for(auto item : overlap){
+		if(t1.at(item.first) != t2.at(item.second)){
+			return false;
+		}
+	}
+
+	return true;
+    }
+
+    Tuple combineTuples(Tuple &t1, Tuple &t2, vector<int> &uniqueCols){
+	Tuple newTuple = Tuple();
+	for(string val : t1.getValues()){
+		newTuple.push_back(val);	
+	}
+	for(int i : uniqueCols){
+		newTuple.push_back(t2.at(i));
+	}
+	return newTuple;
+    }
 
 public:
     Relation() {}
@@ -36,6 +70,10 @@ public:
 
     void addTuple(Tuple t) {
         tuples.insert(t);
+    }
+
+    set<Tuple> getTuples(){
+	return tuples;
     }
 
     string toString() {
@@ -134,6 +172,51 @@ public:
             output->addTuple(newTuple);
         }
         return output;
+    }
+
+    Relation* natJoin(Relation* other){
+	Relation* r1 = this;
+	Relation* r2 = other;
+
+	Relation* output = new Relation();
+
+	// set name
+	output->setName(r1->getName() + " |x| " + r2->getName());
+
+	// calculate header overlap
+	Header h1 = r1->getHeader();
+	Header h2 = r2->getHeader();
+	map<int, int> overlap = map<int, int>();
+	vector<int> uniqueCols = vector<int>();
+	for(unsigned int i2 = 0; i2 < h2.size(); i2++){
+		bool found = false;
+		for(unsigned int i1 = 0; i1 < h1.size(); i1++){
+			if(h1.at(i1) == h2.at(i2)){
+				found = true;
+				overlap[i1] = i2;
+			}
+		}
+
+		if(!found){
+			uniqueCols.push_back(i2);
+		}
+	}
+	
+	// combine headers
+	Header newHeader = combineHeaders(h1, h2, uniqueCols);
+	output->setHeader(newHeader);	
+
+	// combine tuples
+	for(Tuple t1 : r1->getTuples()){
+		for(Tuple t2 : r2->getTuples()){
+			if(isJoinable(t1, t2, overlap)){
+				Tuple newTuple = combineTuples(t1, t2, uniqueCols);
+				output->addTuple(newTuple);
+			}
+		}
+	}
+	
+	return output;
     }
 };
 
