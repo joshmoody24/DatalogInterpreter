@@ -54,6 +54,15 @@ public:
         }
         return out.str();
     }
+    vector<Predicate> getSchemes(){
+        return schemes;
+    }
+    vector<Predicate> getFacts(){
+        return facts;
+    }
+    vector<Predicate> getQueries(){
+        return queries;
+    }
 private:
     vector<Predicate> schemes;
     vector<Predicate> facts;

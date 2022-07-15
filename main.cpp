@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 #include "DatalogProgram.h"
+#include "Database.h"
+#include "Relation.h"
 
 int main(int argc, char *argv[]) {
 
@@ -34,14 +36,38 @@ int main(int argc, char *argv[]) {
 
     // cout << fileContents << endl;
 
+    // lexer
     Lexer lexer;
     vector<Token> tokens = lexer.run(fileContents);
 
+    // parser
     try {
         Parser p = Parser(tokens);
         DatalogProgram program = p.parse();
-        cout << "Success!" << endl;
-        cout << program.toString();
+
+        // interpreter
+        Database db = Database();
+
+        // add all the db tables
+        for(Predicate s : program.getSchemes()){
+            db.addRelation(s);
+        }
+
+        // add all the tuples into those tables
+        for(Predicate f : program.getFacts()){
+            db.addFact(f);
+        }
+
+        for(Predicate q : program.getQueries()){
+            Relation* result = db.query(q);
+            cout << q.toString() << "?";
+            if(result->size() > 0) cout << " Yes(" << result->size() << ")" << endl;
+            else cout << " No" << endl;
+            cout << result->toString();
+        }
+
+        // print the schema for debug
+        // cout << db.toString() << endl;
     }
     catch(Token errorToken) {
         cout << "Failure!" << endl << "  " << errorToken.toString();
@@ -49,4 +75,5 @@ int main(int argc, char *argv[]) {
     catch(const char* errorMsg) {
         cout << errorMsg;
     }
+
 }
