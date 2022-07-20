@@ -115,6 +115,23 @@ public:
         return output;
     }
 
+    Relation* unionWith(Relation* other){
+        Relation* output = new Relation();
+
+        output->setName(this->name + " " + other->getName());
+        output->setHeader(this->header);
+
+        for (Tuple t : this->tuples){
+            output->addTuple(t);
+        }
+
+        for (Tuple t : other->getTuples()){
+            output->addTuple(t);
+        }
+
+        return output;
+    }
+
     Relation* select(unsigned int col1, unsigned int col2) {
         Relation* output = new Relation();
         // check to make sure both columns are in bounds
