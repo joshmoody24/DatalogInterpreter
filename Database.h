@@ -34,7 +34,11 @@ public:
         relations[f.getName()].addTuple(t);
     }
 
-    Relation* query(Predicate q){
+    void addTuple(string relation, Tuple t){
+        relations[relation].addTuple(t);
+    }
+
+    Relation* evaluate(Predicate q){
         // Get the Relation from the Database with the same name as the predicate name in the query.
         Relation relevantTable = relations[q.getName()];
         Relation* output = relevantTable.copy();

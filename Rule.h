@@ -27,6 +27,14 @@ public:
         }
         return out.str();
     }
+
+    vector<Predicate> getBody(){
+        return body;
+    }
+
+    Predicate getHead(){
+        return head;
+    }
 private:
     Predicate head;
     vector<Predicate> body;
