@@ -68,8 +68,8 @@ public:
         header = newHeader;
     }
 
-    void addTuple(Tuple t) {
-        tuples.insert(t);
+    bool addTuple(Tuple t) {
+        return tuples.insert(t).second;
     }
 
     set<Tuple> getTuples(){

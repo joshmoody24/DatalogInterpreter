@@ -5,6 +5,7 @@
 #ifndef LAB1_PREDICATE_H
 #define LAB1_PREDICATE_H
 
+#include <sstream>
 #include "Parameter.h"
 #include <vector>
 

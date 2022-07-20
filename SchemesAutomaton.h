@@ -5,6 +5,8 @@
 #ifndef LAB1_SCHEMESAUTOMATON_H
 #define LAB1_SCHEMESAUTOMATON_H
 
+#include "Automaton.h"
+
 class SchemesAutomaton : public Automaton {
 public:
     SchemesAutomaton() {

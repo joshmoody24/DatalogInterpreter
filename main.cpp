@@ -46,8 +46,8 @@ int main(int argc, char *argv[]) {
         DatalogProgram program = p.parse();
 
         // interpreter
-        Interpreter interpreter = Interpreter();
-        interpreter.interpret(program);
+        Interpreter interpreter = Interpreter(program);
+        interpreter.interpret();
 
     }
     catch(Token errorToken) {

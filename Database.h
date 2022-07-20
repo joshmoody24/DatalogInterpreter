@@ -6,6 +6,7 @@
 #define LAB1_DATABASE_H
 
 #include "Relation.h"
+#include "Predicate.h"
 #include <map>
 #include <set>
 
@@ -14,6 +15,10 @@ private:
     map<string, Relation> relations;
 public:
     Database(){};
+
+    Relation getRelation(string name){
+	return relations[name];
+    }
 
     void addRelation(Predicate scheme){
         Relation r = Relation();
@@ -34,8 +39,8 @@ public:
         relations[f.getName()].addTuple(t);
     }
 
-    void addTuple(string relation, Tuple t){
-        relations[relation].addTuple(t);
+    bool addTuple(string relation, Tuple t){
+        return relations[relation].addTuple(t);
     }
 
     Relation* evaluate(Predicate q){

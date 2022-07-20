@@ -7,7 +7,7 @@
 
 #include <vector>
 #include "Predicate.h"
-
+#include <sstream>
 class Rule{
 public:
     Rule(){};
