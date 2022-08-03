@@ -7,6 +7,7 @@
 
 #include "Database.h"
 #include "DatalogProgram.h"
+#include "Graph.h"
 
 class Interpreter{
 	private:
@@ -30,7 +31,27 @@ class Interpreter{
 				db.addFact(f);
 			}
 
-			// evaluating rules = big complicatd
+			// evaluating rules = big complicated
+            // Build the dependency graph
+            Graph dependencyGraph = Graph();
+            vector<Rule> rules = program.getRules();
+            for(int i = 0; i < rules.size(); i++){
+                for(int j = 0; j < rules.size(); j++){
+                    // if r2 generates something r1 depends on
+                    for(Predicate pConsumed : rules.at(i).getBody()){
+                        if(rules.at(j).getHead().getName() == pConsumed.getName()){
+                            dependencyGraph.addConnection(i, j);
+                        }
+                    }
+                }
+            }
+            cout << "Dependency Graph\n" << dependencyGraph.toString() << endl;
+            // reverse it
+            Graph reversedGraph = dependencyGraph.getReverse();
+            // cout << "Reversed Graph\n" << reversedGraph.toString() << endl;
+            // Run DFS-Forest on the reverse dependency graph to get the post-order.
+            // Use the post-order for a DFS-Forest on the forward dependency graph to find the strongly connected components (SCCs).
+            // Evaluate the rules in each component.
 			cout << "Rule Evaluation" << endl;
 			bool newRules = true;
 			int iterations = 0;

@@ -32,8 +32,15 @@ public:
         return body;
     }
 
-    Predicate getHead(){
+    Predicate getHead() const {
         return head;
+    }
+
+    friend bool operator<(const Rule& a, const Rule& b){
+        return a.getHead().getName() < b.getHead().getName();
+    }
+    friend bool operator>(const Rule& a, const Rule& b){
+        return a.getHead().getName() > b.getHead().getName();
     }
 private:
     Predicate head;
