@@ -35,8 +35,8 @@ class Interpreter{
             // Build the dependency graph
             Graph dependencyGraph = Graph();
             vector<Rule> rules = program.getRules();
-            for(int i = 0; i < rules.size(); i++){
-                for(int j = 0; j < rules.size(); j++){
+            for(unsigned int i = 0; i < rules.size(); i++){
+                for(unsigned int j = 0; j < rules.size(); j++){
                     // if r2 generates something r1 depends on
                     for(Predicate pConsumed : rules.at(i).getBody()){
                         if(rules.at(j).getHead().getName() == pConsumed.getName()){
@@ -52,7 +52,7 @@ class Interpreter{
             vector<int> postOrder = reversedGraph.dfsForest();
             // reverse it
             vector<int> reversedPostOrder;
-            for(int i = 0; i < postOrder.size(); i++){
+            for(unsigned int i = 0; i < postOrder.size(); i++){
                 int index = postOrder.size() - i - 1;
                 reversedPostOrder.push_back(postOrder.at(index));
             }
@@ -68,6 +68,7 @@ class Interpreter{
                 string sep = "";
                 for(int i : scc){
                     cout << sep << "R" << i;
+                    sep = ",";
                 }
                 cout << endl;
 
@@ -78,10 +79,11 @@ class Interpreter{
                     iterations++;
                 } while(newRules);
 
-                cout << iterations << " passes: " << sep;
+                cout << iterations << " passes: ";
+                sep = "";
                 for(int i : scc){
-                    sep = "";
                     cout << sep << "R" << i;
+                    sep = ",";
                 }
                 cout << endl;
             }
@@ -103,6 +105,7 @@ class Interpreter{
 			bool newRules = false;
 			for(int r : scc){
 				// 1. Evaluate the predicates on the right-hand side of the rule in the same way as queries from the last project
+                cout << rules[r].toString() << endl;
 				Relation* finalResult = nullptr;
 				for(Predicate b : rules[r].getBody()){
 					Relation* result = db.evaluate(b);
