@@ -29,6 +29,12 @@ public:
         adjacencyList.at(from).insert(to);
     }
 
+    void addNode(int node){
+        if(adjacencyList.count(node) == 0){
+            adjacencyList[node] = set<int>();
+        }
+    }
+
     set<int> getDependencies(int node){
         return adjacencyList.at(node);
     }
@@ -38,6 +44,7 @@ public:
         for(const auto &pair : adjacencyList){
             int from = pair.first;
             set<int> toList = pair.second;
+            reversed.addNode(from);
             for(int to : toList){
                 reversed.addConnection(to, from);
             }

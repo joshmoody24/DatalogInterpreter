@@ -36,6 +36,8 @@ class Interpreter{
             Graph dependencyGraph = Graph();
             vector<Rule> rules = program.getRules();
             for(unsigned int i = 0; i < rules.size(); i++){
+                // add i to dependecy list (if not already in it)
+                dependencyGraph.addNode(i);
                 for(unsigned int j = 0; j < rules.size(); j++){
                     // if r2 generates something r1 depends on
                     for(Predicate pConsumed : rules.at(i).getBody()){
