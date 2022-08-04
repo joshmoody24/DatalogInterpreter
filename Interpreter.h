@@ -105,7 +105,7 @@ class Interpreter{
 			bool newRules = false;
 			for(int r : scc){
 				// 1. Evaluate the predicates on the right-hand side of the rule in the same way as queries from the last project
-                cout << rules[r].toString() << endl;
+                cout << rules[r].toString() << "." << endl;
 				Relation* finalResult = nullptr;
 				for(Predicate b : rules[r].getBody()){
 					Relation* result = db.evaluate(b);
