@@ -65,7 +65,7 @@ class Interpreter{
             // Evaluate the rules in each component.
 			cout << "Rule Evaluation" << endl;
             for(set<int> scc : sccList){
-
+                if(scc.size() == 0) continue;
                 cout << "SCC: ";
                 string sep = "";
                 for(int i : scc){
